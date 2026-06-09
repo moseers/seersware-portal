@@ -1,0 +1,94 @@
+---
+import type { Locale } from '../i18n/utils';
+import { useTranslations } from '../i18n/utils';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  locale: Locale;
+  title?: string;
+}
+
+const { locale, title } = Astro.props;
+const T = useTranslations(locale);
+const pageTitle = title ? `${title} — Seersware` : 'Seersware';
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={T.hero.sub} />
+    <title>{pageTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <Header locale={locale} />
+    <main>
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: #080f1e;
+    --bg-2: #0f172a;
+    --bg-3: #1e293b;
+    --accent: #0ea5e9;
+    --accent-dim: #0284c7;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border: #1e293b;
+    --max-w: 1100px;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .container {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  section {
+    padding: 5rem 0;
+  }
+
+  h1, h2, h3 {
+    line-height: 1.2;
+    font-weight: 700;
+  }
+</style>

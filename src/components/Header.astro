@@ -1,0 +1,95 @@
+---
+import type { Locale } from '../i18n/utils';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const T = useTranslations(locale);
+const base = locale === 'fr' ? '' : '/en';
+---
+
+<header>
+  <div class="container">
+    <a href={locale === 'fr' ? '/' : '/en/'} class="logo">Seersware</a>
+    <nav>
+      <a href={`${base}/`}>{T.nav.home}</a>
+      <a href={`${base}/services`}>{T.nav.services}</a>
+      <a href={`${base}/about`}>{T.nav.about}</a>
+      <a href={`${base}/contact`}>{T.nav.contact}</a>
+    </nav>
+    <a href={T.nav.langToggleHref} class="lang-toggle">{T.nav.langToggle}</a>
+  </div>
+</header>
+
+<style>
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 4rem;
+  }
+
+  .logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin-right: auto;
+  }
+
+  .logo:hover {
+    text-decoration: none;
+    color: var(--accent);
+  }
+
+  nav {
+    display: flex;
+    gap: 1.75rem;
+  }
+
+  nav a {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.15s;
+  }
+
+  nav a:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .lang-toggle {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+
+  .lang-toggle:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    nav {
+      display: none;
+    }
+  }
+</style>

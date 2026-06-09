@@ -1,0 +1,51 @@
+---
+import type { Locale } from '../i18n/utils';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const T = useTranslations(locale);
+---
+
+<footer>
+  <div class="container">
+    <span class="logo">Seersware</span>
+    <p>{T.footer.copy}</p>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-muted);
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>

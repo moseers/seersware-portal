@@ -1,0 +1,49 @@
+# Seersware Portal — Azure DevOps Pipeline
+#
+# Before first run, run: .\scripts\provision.ps1 -OrgUrl <url> -Project <name>
+# That script creates the Azure Static Web App and the 'seersware-deploy' variable group.
+
+trigger:
+  branches:
+    include:
+      - main
+
+pr: none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: NodeTool@0
+    displayName: 'Use Node.js 20'
+    inputs:
+      versionSpec: '20.x'
+
+  - script: npm ci
+    displayName: 'Install dependencies'
+
+  - script: npm run build
+    displayName: 'Build Astro site'
+
+  - task: AzureCLI@2
+    displayName: 'Fetch SWA deployment token (no stored secret)'
+    inputs:
+      azureSubscription: 'seersware-svc'
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        token=$(az staticwebapp secrets list \
+          --name seersware \
+          --resource-group seersware-rg \
+          --query "properties.apiKey" \
+          --output tsv)
+        echo "##vso[task.setvariable variable=SWA_TOKEN;issecret=true]$token"
+
+  - task: AzureStaticWebApp@0
+    displayName: 'Deploy to Azure Static Web Apps'
+    inputs:
+      app_location: '/'
+      output_location: 'dist'
+      skip_app_build: true
+    env:
+      azure_static_web_apps_api_token: $(SWA_TOKEN)
