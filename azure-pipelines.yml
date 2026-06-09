@@ -42,8 +42,8 @@ steps:
   - task: AzureStaticWebApp@0
     displayName: 'Deploy to Azure Static Web Apps'
     inputs:
-      app_location: '/'
-      output_location: 'dist'
+      app_location: 'dist'
+      output_location: ''
       skip_app_build: true
     env:
       azure_static_web_apps_api_token: $(SWA_TOKEN)
