@@ -6,8 +6,10 @@ const T = useTranslations('fr');
 ---
 
 <BaseLayout locale="fr">
+  <!-- Hero -->
   <section class="hero">
-    <div class="container">
+    <div class="parallax-bg" id="parallax-bg" aria-hidden="true"></div>
+    <div class="container hero-content">
       <p class="eyebrow">Seersware</p>
       <h1>{T.hero.tagline}</h1>
       <p class="sub">{T.hero.sub}</p>
@@ -15,12 +17,22 @@ const T = useTranslations('fr');
     </div>
   </section>
 
+  <!-- About -->
+  <section class="about">
+    <div class="container">
+      <p class="eyebrow">{T.about.eyebrow}</p>
+      <h2>{T.about.title}</h2>
+      <p class="about-body">{T.about.body}</p>
+    </div>
+  </section>
+
+  <!-- Services -->
   <section class="services-preview">
     <div class="container">
       <h2>{T.services.title}</h2>
-      <div class="grid">
+      <div class="services-grid">
         {T.services.offerings.map((s) => (
-          <div class="card">
+          <div class="service-card">
             <h3>{s.title}</h3>
             <p>{s.description}</p>
           </div>
@@ -28,21 +40,65 @@ const T = useTranslations('fr');
       </div>
     </div>
   </section>
+
+  <!-- Expertise -->
+  <section class="expertise">
+    <div class="container">
+      <h2>{T.expertise.title}</h2>
+      <div class="expertise-grid">
+        {T.expertise.items.map((item) => (
+          <div class="expertise-card">
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom CTA -->
+  <section class="cta-band">
+    <div class="container cta-inner">
+      <div class="cta-text">
+        <h2>{T.cta.title}</h2>
+        <p>{T.cta.sub}</p>
+      </div>
+      <a href="/contact" class="btn btn-lg">{T.cta.btn}</a>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
+  /* ── Hero ── */
   .hero {
+    position: relative;
     min-height: 80vh;
     display: flex;
     align-items: center;
+    overflow: hidden;
     background: radial-gradient(ellipse 80% 60% at 50% -10%, color-mix(in srgb, var(--accent) 12%, transparent), transparent);
   }
 
+  .parallax-bg {
+    position: absolute;
+    inset: -40% 0;
+    background-image: radial-gradient(circle, color-mix(in srgb, var(--accent) 18%, transparent) 1px, transparent 1px);
+    background-size: 28px 28px;
+    z-index: 0;
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
   .eyebrow {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: var(--accent);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     margin-bottom: 1rem;
   }
@@ -77,39 +133,143 @@ const T = useTranslations('fr');
     text-decoration: none;
   }
 
+  .btn-lg {
+    padding: 0.9rem 2.25rem;
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+
+  /* ── About ── */
+  .about {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .about h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .about-body {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 680px;
+    line-height: 1.8;
+  }
+
+  /* ── Services ── */
   .services-preview {
     background: var(--bg-2);
   }
 
-  h2 {
+  .services-preview h2 {
     font-size: 1.75rem;
     margin-bottom: 2.5rem;
     letter-spacing: -0.02em;
   }
 
-  .grid {
+  .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1.5rem;
   }
 
-  .card {
+  .service-card {
     background: var(--bg-3);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 1.75rem;
+    transition: border-color 0.15s;
   }
 
-  .card h3 {
+  .service-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+
+  .service-card h3 {
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.75rem;
     color: var(--accent);
   }
 
-  .card p {
+  .service-card p {
     font-size: 0.9rem;
     color: var(--text-muted);
     line-height: 1.65;
   }
+
+  /* ── Expertise ── */
+  .expertise {
+    background: var(--bg);
+  }
+
+  .expertise h2 {
+    font-size: 1.75rem;
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .expertise-card {
+    padding: 1.5rem;
+    border-left: 2px solid var(--accent);
+    background: var(--bg-2);
+    border-radius: 0 6px 6px 0;
+  }
+
+  .expertise-card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .expertise-card p {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── CTA Band ── */
+  .cta-band {
+    background: color-mix(in srgb, var(--accent) 8%, var(--bg-2));
+    border-top: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+
+  .cta-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-text h2 {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-text p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    max-width: 520px;
+  }
 </style>
+
+<script>
+  const bg = document.getElementById('parallax-bg');
+  if (bg) {
+    window.addEventListener('scroll', () => {
+      bg.style.transform = `translateY(${window.scrollY * 0.35}px)`;
+    }, { passive: true });
+  }
+</script>
