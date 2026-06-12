@@ -10,7 +10,6 @@ const T = useTranslations('en');
   <section class="hero">
     <div class="parallax-bg" id="parallax-bg" aria-hidden="true"></div>
     <div class="container hero-content">
-      <p class="eyebrow">Seersware</p>
       <h1>{T.hero.tagline}</h1>
       <p class="sub">{T.hero.sub}</p>
       <a href="/en/contact" class="btn">{T.hero.cta}</a>
@@ -82,11 +81,19 @@ const T = useTranslations('en');
   .parallax-bg {
     position: absolute;
     inset: -40% 0;
-    background-image: radial-gradient(circle, color-mix(in srgb, var(--accent) 18%, transparent) 1px, transparent 1px);
-    background-size: 28px 28px;
+    background-image: url('/paper-plane.jpg');
+    background-size: cover;
+    background-position: center;
     z-index: 0;
     will-change: transform;
     pointer-events: none;
+  }
+
+  .parallax-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(8, 15, 30, 0.65) 0%, rgba(8, 15, 30, 0.8) 100%);
   }
 
   .hero-content {
@@ -104,16 +111,15 @@ const T = useTranslations('en');
   }
 
   h1 {
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    max-width: 700px;
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
     margin-bottom: 1.5rem;
     letter-spacing: -0.03em;
   }
 
   .sub {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     color: var(--text-muted);
-    max-width: 560px;
+    max-width: 700px;
     margin-bottom: 2.5rem;
     line-height: 1.7;
   }
@@ -141,9 +147,22 @@ const T = useTranslations('en');
 
   /* ── About ── */
   .about {
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    position: relative;
+    background-image: url('/mtl-dusk.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .about::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 15, 30, 0.72);
+  }
+
+  .about .container {
+    position: relative;
+    z-index: 1;
   }
 
   .about h2 {

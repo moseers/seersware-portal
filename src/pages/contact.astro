@@ -3,18 +3,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { useTranslations } from '../i18n/utils';
 
 const T = useTranslations('fr');
+
+// TODO: Replace with your Calendly URL once your account is created
+// Example: https://calendly.com/your-name/30min
+const CALENDLY_URL = 'https://calendly.com/moseers/30min';
 ---
 
 <BaseLayout locale="fr" title={T.nav.contact}>
-  <section>
+  <section class="contact">
     <div class="container">
       <h1>{T.contact.title}</h1>
       <p class="sub">{T.contact.sub}</p>
-      <!-- Replace the src with your Calendly embed URL -->
-      <div class="calendly-placeholder">
-        <p>[ Intégration Calendly ]</p>
-        <p class="hint">Remplacez ce bloc par votre widget Calendly inline.</p>
+
+      <div class="calendly-wrapper">
+        <div
+          class="calendly-inline-widget"
+          data-url={CALENDLY_URL}
+        ></div>
       </div>
+
       <p class="email-line">
         {T.contact.email}&nbsp;<a href="mailto:info@seersware.com">info@seersware.com</a>
       </p>
@@ -22,7 +29,13 @@ const T = useTranslations('fr');
   </section>
 </BaseLayout>
 
+<script src="https://assets.calendly.com/assets/external/widget.js" is:inline></script>
+
 <style>
+  .contact {
+    min-height: calc(100vh - 4rem);
+  }
+
   h1 {
     font-size: 2.25rem;
     margin-bottom: 1rem;
@@ -32,23 +45,21 @@ const T = useTranslations('fr');
   .sub {
     color: var(--text-muted);
     max-width: 540px;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
     line-height: 1.7;
   }
 
-  .calendly-placeholder {
-    border: 1px dashed var(--border);
-    border-radius: 8px;
-    padding: 4rem 2rem;
-    text-align: center;
-    max-width: 700px;
-    margin-bottom: 2rem;
-    color: var(--text-muted);
+  .calendly-wrapper {
+    max-width: 900px;
+    margin-bottom: 2.5rem;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
   }
 
-  .hint {
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
+  .calendly-inline-widget {
+    min-width: 320px;
+    height: 700px;
   }
 
   .email-line {
