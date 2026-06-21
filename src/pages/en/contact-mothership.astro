@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const T = useTranslations('en');
+
+// TODO: Replace with your Calendly URL once your account is created
+// Example: https://calendly.com/your-name/30min
+const CALENDLY_URL = 'https://calendly.com/moseers/30min';
+---
+
+<BaseLayout locale="en" title={T.nav.contact}>
+  <section class="contact">
+    <div class="container">
+      <h1>{T.contact.title}</h1>
+      <p class="sub">{T.contact.sub}</p>
+
+      <div class="calendly-wrapper">
+        <div
+          class="calendly-inline-widget"
+          data-url={CALENDLY_URL}
+        ></div>
+      </div>
+
+      <p class="email-line">
+        {T.contact.email}&nbsp;<a href="mailto:info@seersware.com">info@seersware.com</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script src="https://assets.calendly.com/assets/external/widget.js" is:inline></script>
+
+<style>
+  .contact {
+    min-height: calc(100vh - 4rem);
+  }
+
+  h1 {
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.03em;
+  }
+
+  .sub {
+    color: var(--text-muted);
+    max-width: 540px;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+
+  .calendly-wrapper {
+    max-width: 900px;
+    margin-bottom: 2.5rem;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .calendly-inline-widget {
+    min-width: 320px;
+    height: 700px;
+  }
+
+  .email-line {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+</style>
