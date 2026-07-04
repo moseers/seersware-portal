@@ -1,7 +1,9 @@
 # Seersware Portal — Azure DevOps Pipeline
 #
-# Before first run, run: .\scripts\provision.ps1 -OrgUrl <url> -Project <name>
-# That script creates the Azure Static Web App and the 'seersware-deploy' variable group.
+# Deploys to Cloudflare Pages via Wrangler CLI.
+# Required variable group: 'cloudflare-deploy' with:
+#   CLOUDFLARE_API_TOKEN  (secret)
+#   CLOUDFLARE_ACCOUNT_ID
 
 trigger:
   branches:
@@ -12,6 +14,9 @@ pr: none
 
 pool:
   vmImage: ubuntu-latest
+
+variables:
+  - group: cloudflare-deploy
 
 steps:
   - task: UseNode@1
@@ -25,25 +30,8 @@ steps:
   - script: npm run build
     displayName: 'Build Astro site'
 
-  - task: AzureCLI@2
-    displayName: 'Fetch SWA deployment token (no stored secret)'
-    inputs:
-      azureSubscription: 'seersware-svc'
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        token=$(az staticwebapp secrets list \
-          --name seersware \
-          --resource-group seersware-rg \
-          --query "properties.apiKey" \
-          --output tsv)
-        echo "##vso[task.setvariable variable=SWA_TOKEN;issecret=true]$token"
-
-  - task: AzureStaticWebApp@0
-    displayName: 'Deploy to Azure Static Web Apps'
-    inputs:
-      app_location: 'dist'
-      output_location: ''
-      skip_app_build: true
+  - script: npx wrangler pages deploy dist --project-name seersware-portal --commit-dirty=true
+    displayName: 'Deploy to Cloudflare Pages'
     env:
-      azure_static_web_apps_api_token: $(SWA_TOKEN)
+      CLOUDFLARE_API_TOKEN: $(CLOUDFLARE_API_TOKEN)
+      CLOUDFLARE_ACCOUNT_ID: $(CLOUDFLARE_ACCOUNT_ID)
