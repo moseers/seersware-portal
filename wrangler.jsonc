@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "seersware-portal",
+  "compatibility_date": "2026-07-04",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "dist",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    {
+      "pattern": "seersware.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.seersware.com",
+      "custom_domain": true
+    }
+  ]
+}
